@@ -1,0 +1,106 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<BaseLayout title="页面不存在 — Knove" description="这一页没有留下文字。" noindex bodyClass="not-found-page">
+  <SiteHeader />
+
+  <main id="main" class="not-found" tabindex="-1">
+    <div class="not-found-inner">
+      <p class="not-found-kicker">Error 404 <span aria-hidden="true">/</span> Off the page</p>
+      <h1>这一页<br />没有留下文字。</h1>
+      <p class="not-found-note">
+        也许它被雨冲走了，也许只是还没有写。回到首页，那里有文字，也有一些做过的东西。
+      </p>
+      <a class="not-found-link" href="/">回到首页 <span aria-hidden="true">↖</span></a>
+    </div>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .not-found-page {
+    background:
+      radial-gradient(ellipse 42% 36% at 82% -6%, rgba(200, 173, 127, 0.07), transparent 68%),
+      #0b0b09;
+  }
+
+  .not-found {
+    display: flex;
+    align-items: center;
+    min-height: 100svh;
+    padding: 9rem var(--page-gutter) 7rem;
+  }
+
+  .not-found-inner {
+    width: min(100%, 62rem);
+  }
+
+  .not-found-kicker {
+    margin-bottom: clamp(2.2rem, 5vw, 3.5rem);
+    color: var(--ink-faint);
+    font: 500 0.57rem/1.4 var(--font-mono);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .not-found-kicker span {
+    margin-inline: 0.4rem;
+    color: var(--ink-ghost);
+  }
+
+  .not-found h1 {
+    color: #f1ece1;
+    font-family: var(--font-serif);
+    font-size: clamp(3.4rem, 7vw, 7.2rem);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.055em;
+  }
+
+  .not-found-note {
+    max-width: 27em;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    color: var(--ink-soft);
+    font-family: var(--font-serif);
+    font-size: clamp(0.98rem, 1.2vw, 1.1rem);
+    line-height: 1.95;
+  }
+
+  .not-found-link {
+    display: inline-flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: clamp(2.6rem, 5vw, 4rem);
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    font: 500 0.58rem/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: border-color 220ms ease;
+  }
+
+  .not-found-link:hover {
+    border-color: var(--ink);
+  }
+
+  @media (max-width: 760px) {
+    .not-found {
+      padding-top: 8rem;
+      padding-bottom: 5rem;
+    }
+
+    .not-found h1 {
+      font-size: clamp(2.25rem, 10.5vw, 3.2rem);
+    }
+
+    .not-found-note {
+      font-size: 0.97rem;
+    }
+  }
+</style>

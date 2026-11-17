@@ -1,0 +1,82 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const glyphs: Record<string, string[]> = {
+  K: [
+    "10001",
+    "10010",
+    "10100",
+    "11000",
+    "10100",
+    "10010",
+    "10001",
+  ],
+  n: [
+    "00000",
+    "00000",
+    "10110",
+    "11001",
+    "10001",
+    "10001",
+    "10001",
+  ],
+  o: [
+    "00000",
+    "00000",
+    "01110",
+    "10001",
+    "10001",
+    "10001",
+    "01110",
+  ],
+  v: [
+    "00000",
+    "00000",
+    "10001",
+    "10001",
+    "10001",
+    "01010",
+    "00100",
+  ],
+  e: [
+    "00000",
+    "00000",
+    "01110",
+    "10001",
+    "11111",
+    "10000",
+    "01110",
+  ],
+};
+
+const word = "Knove";
+const pixels: Array<{ x: number; y: number }> = [];
+let cursor = 0;
+
+for (const [index, letter] of [...word].entries()) {
+  const glyph = glyphs[letter];
+  glyph.forEach((row, y) => {
+    [...row].forEach((cell, x) => {
+      if (cell === "1") pixels.push({ x: cursor + x, y });
+    });
+  });
+  cursor += letter === "K" ? 6 : 5;
+  if (index < word.length - 1 && letter !== "K") cursor += 1;
+}
+
+const viewWidth = cursor - 1;
+---
+
+<svg
+  class:list={["pixel-wordmark", className]}
+  viewBox={`0 0 ${viewWidth} 7`}
+  role="img"
+  aria-label="Knove"
+  shape-rendering="crispEdges"
+>
+  {pixels.map(({ x, y }) => <rect x={x} y={y} width="1" height="1" fill="currentColor" />)}
+</svg>

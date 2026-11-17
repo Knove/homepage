@@ -1,0 +1,58 @@
+---
+import type { GetStaticPaths } from "astro";
+import { render } from "astro:content";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
+import {
+  getPublishedPosts,
+  getReadingMinutes,
+  postPath,
+  type Post,
+} from "../../lib/posts";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getPublishedPosts();
+
+  return posts.map((post, index) => {
+    const previous = posts[index - 1];
+    const next = posts[index + 1];
+
+    return {
+      params: { slug: post.id },
+      props: {
+        post,
+        index,
+        total: posts.length,
+        previous: previous
+          ? { title: previous.data.title, href: postPath(previous) }
+          : undefined,
+        next: next ? { title: next.data.title, href: postPath(next) } : undefined,
+      },
+    };
+  });
+};
+
+interface Props {
+  post: Post;
+  index: number;
+  total: number;
+  previous?: { title: string; href: string };
+  next?: { title: string; href: string };
+}
+
+const { post, index, total, previous, next } = Astro.props;
+const { Content } = await render(post);
+const readingMinutes = getReadingMinutes(post.body);
+---
+
+<ArticleLayout
+  title={post.data.title}
+  description={post.data.description}
+  date={post.data.date}
+  readingMinutes={readingMinutes}
+  index={index}
+  total={total}
+  previous={previous}
+  next={next}
+>
+  <Content />
+</ArticleLayout>

@@ -1,0 +1,220 @@
+---
+import PixelWordmark from "./PixelWordmark.astro";
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
+import {
+  formatDateShort,
+  getReadingMinutes,
+  postPath,
+  type Post,
+} from "../lib/posts";
+import { PROJECTS, PROJECT_INDEX_URL } from "../lib/projects";
+import "../styles/home.css";
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+const latest = posts[0];
+const count = String(posts.length).padStart(2, "0");
+const projectCount = String(PROJECTS.length).padStart(2, "0");
+const latestDate = latest ? formatDateShort(latest.data.date) : null;
+const year = new Date().getFullYear();
+const roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
+---
+
+<main id="main" class="home-page" tabindex="-1">
+  <section class="home-hero" aria-labelledby="home-title">
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-visual-media">
+        <picture>
+          <source
+            type="image/avif"
+            srcset="/images/a-rainy-night-1200.avif 1200w, /images/a-rainy-night-1920.avif 1920w"
+            sizes="(max-width: 760px) 100vw, 64vw"
+          />
+          <source
+            type="image/webp"
+            srcset="/images/a-rainy-night-1200.webp 1200w, /images/a-rainy-night-1920.webp 1920w"
+            sizes="(max-width: 760px) 100vw, 64vw"
+          />
+          <img
+            src="/images/a-rainy-night-1200.jpg"
+            srcset="/images/a-rainy-night-1200.jpg 1200w, /images/a-rainy-night-1920.jpg 1920w"
+            sizes="(max-width: 760px) 100vw, 64vw"
+            width="1920"
+            height="2590"
+            alt="雨夜车窗上的水珠，窗外的灯光被折射成模糊的暖色光斑。"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </picture>
+      </div>
+      <p class="hero-visual-caption" aria-hidden="true">
+        Cover / Sahil Rathod
+      </p>
+      <PixelWordmark class="hero-visual-wordmark" />
+    </div>
+
+    <SiteHeader />
+
+    <div class="hero-copy">
+      <p class="hero-kicker">
+        <span class="hero-kicker-mark" aria-hidden="true"></span>
+        <span>Knove</span>
+        <span class="hero-kicker-rule" aria-hidden="true"></span>
+        <span>Personal archive</span>
+      </p>
+
+      <h1 id="home-title" class="hero-title">
+        <span>在噪声里，</span>
+        <span>留一小块黑。</span>
+      </h1>
+
+      <div class="hero-intro">
+        <p>文字、代码，和一些还没想清楚的问题。</p>
+        <p class="hero-intro-secondary">
+          这里是 Knove 的个人档案。文章与项目缓慢更新。
+        </p>
+      </div>
+
+      {latest && (
+        <div class="hero-actions">
+          <a class="hero-latest" href={postPath(latest)}>
+            <span class="hero-latest-label">
+              <span>Latest writing</span>
+              <time datetime={latest.data.date.toISOString()}>{latestDate}</time>
+            </span>
+            <span class="hero-latest-row">
+              <span class="hero-latest-title">{latest.data.title}</span>
+              <span class="hero-latest-arrow" aria-hidden="true">↗</span>
+            </span>
+          </a>
+          <a class="hero-index-link" href="#writing">
+            All writing <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+      )}
+    </div>
+
+    <div class="hero-bottom" aria-hidden="true">
+      <span>Notes &amp; selected work</span>
+      <span>{count} writing / {projectCount} work</span>
+    </div>
+  </section>
+
+  <section id="writing" class="writing-section" aria-labelledby="writing-title">
+    <header class="section-heading">
+      <div class="section-heading-copy">
+        <p class="section-kicker">Selected writing <span>/ {count}</span></p>
+        <h2 id="writing-title">近作</h2>
+      </div>
+      <p class="section-heading-note">
+        按写下的顺序排列。
+      </p>
+    </header>
+
+    <div class="writing-index">
+      {posts.map((post, index) => (
+        <a class="writing-entry" href={postPath(post)}>
+          <span class="entry-index" aria-hidden="true">{roman[index] ?? String(index + 1).padStart(2, "0")}</span>
+          <time class="entry-date" datetime={post.data.date.toISOString()}>
+            {formatDateShort(post.data.date)}
+          </time>
+          <span class="entry-body">
+            <span class="entry-title">{post.data.title}</span>
+            <span class="entry-description">{post.data.description}</span>
+          </span>
+          <span class="entry-aside">
+            <span>{getReadingMinutes(post.body)} min</span>
+            <span class="entry-arrow" aria-hidden="true">↗</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section id="work" class="work-section" aria-labelledby="work-title">
+    <header class="section-heading work-heading">
+      <div class="section-heading-copy">
+        <p class="section-kicker">Selected work <span>/ {projectCount}</span></p>
+        <h2 id="work-title">项目</h2>
+      </div>
+      <div class="section-heading-side">
+        <p class="section-heading-note">
+          源代码公开在 GitHub。
+        </p>
+        <a class="section-heading-link" href={PROJECT_INDEX_URL} target="_blank" rel="noreferrer">
+          All repositories <span aria-hidden="true">↗</span>
+          <span class="sr-only">（在新标签页打开）</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="work-grid">
+      {PROJECTS.map((project, index) => (
+        <a class="work-item" href={project.href} target="_blank" rel="noreferrer">
+          <span class="work-item-top">
+            <span class="work-index">{String(index + 1).padStart(2, "0")}</span>
+            <span class="work-arrow" aria-hidden="true">↗</span>
+          </span>
+          <span class="work-item-name">{project.name}</span>
+          <span class="work-item-description">{project.description}</span>
+          <span class="work-item-meta">
+            <span>{project.stack}</span>
+            <span>{project.year}</span>
+          </span>
+          <span class="sr-only">（在新标签页打开）</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section id="about" class="about-section" aria-labelledby="about-title">
+    <div class="about-topline">
+      <p class="section-kicker">About / Colophon</p>
+      <span class="about-mark" aria-hidden="true">Archive / {year}</span>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-lead">
+        <h2 id="about-title">写代码，<br />也写一点东西。</h2>
+        <p>
+          我是 Knove。这里放两类内容：关于时间、记忆与创作的文字，
+          以及已经公开的项目。
+        </p>
+        <p class="about-lead-secondary">
+          没有固定更新频率。文章会改，项目也会继续生长。想跟着看，可以从
+          RSS 或 GitHub 找到我。
+        </p>
+      </div>
+      <div class="about-details">
+        <div class="about-detail">
+          <p class="about-label">Elsewhere</p>
+          <p class="about-links">
+            <a href="https://github.com/Knove" target="_blank" rel="noreferrer">
+              GitHub <span aria-hidden="true">↗</span>
+              <span class="sr-only">（在新标签页打开）</span>
+            </a>
+            <a href="/rss.xml">RSS <span aria-hidden="true">↗</span></a>
+          </p>
+        </div>
+        <div class="about-detail">
+          <p class="about-label">Colophon</p>
+          <p>Set in Songti &amp; system serif.<br />Built with Astro.</p>
+        </div>
+        <div class="about-detail">
+          <p class="about-label">Archive</p>
+          <p>{count} essays / {projectCount} projects<br />Latest entry {latestDate}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-signoff" aria-hidden="true">
+      <PixelWordmark />
+    </div>
+  </section>
+
+  <SiteFooter />
+</main>

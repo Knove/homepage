@@ -1,0 +1,12 @@
+---
+import HomePage from "../components/HomePage.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPublishedPosts } from "../lib/posts";
+import { SITE_TITLE } from "../lib/site";
+
+const posts = await getPublishedPosts();
+---
+
+<BaseLayout title={SITE_TITLE} bodyClass="home-page">
+  <HomePage posts={posts} />
+</BaseLayout>

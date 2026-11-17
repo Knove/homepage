@@ -1,0 +1,90 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { formatDate } from "../lib/posts";
+import "../styles/article.css";
+
+interface AdjacentPost {
+  title: string;
+  href: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  readingMinutes: number;
+  index: number;
+  total: number;
+  previous?: AdjacentPost;
+  next?: AdjacentPost;
+}
+
+const { title, description, date, readingMinutes, index, total, previous, next } = Astro.props;
+const roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
+const issue = roman[index] ?? String(index + 1).padStart(2, "0");
+const totalLabel = roman[total - 1] ?? String(total).padStart(2, "0");
+---
+
+<BaseLayout title={`${title} — Knove`} description={description} bodyClass="article-page">
+  <SiteHeader />
+
+  <main id="main" class="article-main" tabindex="-1">
+    <article class="article">
+      <header class="article-intro">
+        <div class="article-kicker">
+          <span>Essay</span>
+          <span aria-hidden="true">/</span>
+          <span>{issue} of {totalLabel}</span>
+        </div>
+
+        <h1>{title}</h1>
+        <p class="article-deck">{description}</p>
+
+        <div class="article-meta">
+          <time datetime={date.toISOString()}>{formatDate(date)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{readingMinutes} 分钟阅读</span>
+        </div>
+      </header>
+
+      <div class="prose">
+        <slot />
+      </div>
+
+      <footer class="article-outro">
+        <div class="article-outro-top">
+          <p class="article-signature">
+            <span class="article-signature-mark" aria-hidden="true"></span>
+            <span>Knove / {issue}</span>
+          </p>
+          <a class="article-back" href="/#writing">返回全部文字 <span aria-hidden="true">↖</span></a>
+        </div>
+
+        {(previous || next) && (
+          <nav class="article-pagination" aria-label="文章导航">
+            {previous ? (
+              <a class="article-pagination-link" href={previous.href}>
+                <span class="article-pagination-label">Previous</span>
+                <span class="article-pagination-title">{previous.title}</span>
+              </a>
+            ) : (
+              <span aria-hidden="true"></span>
+            )}
+            {next ? (
+              <a class="article-pagination-link article-pagination-link--next" href={next.href}>
+                <span class="article-pagination-label">Next</span>
+                <span class="article-pagination-title">{next.title}</span>
+              </a>
+            ) : (
+              <span aria-hidden="true"></span>
+            )}
+          </nav>
+        )}
+      </footer>
+    </article>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
