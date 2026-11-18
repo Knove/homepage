@@ -1,23 +1,25 @@
 ---
 import PixelWordmark from "./PixelWordmark.astro";
+import { withBase } from "../lib/site";
 
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+const home = withBase("/");
 ---
 
 <header class:list={["site-header", className]}>
-  <a class="site-mark" href="/" aria-label="Knove，返回首页">
+  <a class="site-mark" href={home} aria-label="Knove，返回首页">
     <PixelWordmark />
   </a>
 
   <nav class="site-nav" aria-label="站点导航">
-    <a href="/#writing">Writing</a>
-    <a href="/#work">Work</a>
-    <a href="/#about">About</a>
-    <a class="site-nav-rss" href="/rss.xml">
+    <a href={`${home}#writing`}>Writing</a>
+    <a href={`${home}#work`}>Work</a>
+    <a href={`${home}#about`}>About</a>
+    <a class="site-nav-rss" href={withBase("/rss.xml")}>
       RSS <span aria-hidden="true">↗</span>
     </a>
   </nav>

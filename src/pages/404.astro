@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import { withBase } from "../lib/site";
 ---
 
 <BaseLayout title="页面不存在 — Knove" description="这一页没有留下文字。" noindex bodyClass="not-found-page">
@@ -14,7 +15,7 @@ import SiteHeader from "../components/SiteHeader.astro";
       <p class="not-found-note">
         也许它被雨冲走了，也许只是还没有写。回到首页，那里有文字，也有一些做过的东西。
       </p>
-      <a class="not-found-link" href="/">回到首页 <span aria-hidden="true">↖</span></a>
+      <a class="not-found-link" href={withBase("/")}>回到首页 <span aria-hidden="true">↖</span></a>
     </div>
   </main>
 

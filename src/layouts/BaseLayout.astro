@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from "../lib/site";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, stripBase, withBase } from "../lib/site";
 
 interface Props {
   title?: string;
@@ -16,11 +16,14 @@ const {
   noindex = false,
 } = Astro.props;
 
+const pagePath = withBase(Astro.url.pathname);
+const routePath = stripBase(pagePath);
+const isArticle = routePath.startsWith("/writing/");
 const canonicalUrl = Astro.site
-  ? new URL(Astro.url.pathname, Astro.site).toString()
+  ? new URL(pagePath, Astro.site).toString()
   : undefined;
 const socialImage = new URL(
-  "/images/og-knove.jpg",
+  withBase("/images/og-knove.jpg"),
   Astro.site ?? Astro.url.origin,
 ).toString();
 ---
@@ -36,7 +39,7 @@ const socialImage = new URL(
     <meta name="description" content={description} />
     <meta name="author" content={SITE_NAME} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <meta property="og:type" content={Astro.url.pathname.startsWith("/writing/") ? "article" : "website"} />
+    <meta property="og:type" content={isArticle ? "article" : "website"} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:locale" content="zh_CN" />
@@ -55,8 +58,13 @@ const socialImage = new URL(
     <meta name="twitter:image" content={socialImage} />
     <title>{title}</title>
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate" type="application/rss+xml" title="Knove — Writing" href="/rss.xml" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Knove — Writing"
+      href={withBase("/rss.xml")}
+    />
     <script is:inline>
       document.documentElement.classList.add("js");
     </script>

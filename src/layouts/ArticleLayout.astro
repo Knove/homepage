@@ -3,6 +3,7 @@ import BaseLayout from "./BaseLayout.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import { formatDate } from "../lib/posts";
+import { withBase } from "../lib/site";
 import "../styles/article.css";
 
 interface AdjacentPost {
@@ -59,7 +60,7 @@ const totalLabel = roman[total - 1] ?? String(total).padStart(2, "0");
             <span class="article-signature-mark" aria-hidden="true"></span>
             <span>Knove / {issue}</span>
           </p>
-          <a class="article-back" href="/#writing">返回全部文字 <span aria-hidden="true">↖</span></a>
+          <a class="article-back" href={`${withBase("/")}#writing`}>返回全部文字 <span aria-hidden="true">↖</span></a>
         </div>
 
         {(previous || next) && (

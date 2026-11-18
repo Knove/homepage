@@ -9,6 +9,7 @@ import {
   type Post,
 } from "../lib/posts";
 import { PROJECTS, PROJECT_INDEX_URL } from "../lib/projects";
+import { withBase } from "../lib/site";
 import "../styles/home.css";
 
 interface Props {
@@ -22,6 +23,7 @@ const projectCount = String(PROJECTS.length).padStart(2, "0");
 const latestDate = latest ? formatDateShort(latest.data.date) : null;
 const year = new Date().getFullYear();
 const roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
+const img = (name: string) => withBase(`/images/${name}`);
 ---
 
 <main id="main" class="home-page" tabindex="-1">
@@ -31,17 +33,17 @@ const roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
         <picture>
           <source
             type="image/avif"
-            srcset="/images/a-rainy-night-1200.avif 1200w, /images/a-rainy-night-1920.avif 1920w"
+            srcset={`${img("a-rainy-night-1200.avif")} 1200w, ${img("a-rainy-night-1920.avif")} 1920w`}
             sizes="(max-width: 760px) 100vw, 64vw"
           />
           <source
             type="image/webp"
-            srcset="/images/a-rainy-night-1200.webp 1200w, /images/a-rainy-night-1920.webp 1920w"
+            srcset={`${img("a-rainy-night-1200.webp")} 1200w, ${img("a-rainy-night-1920.webp")} 1920w`}
             sizes="(max-width: 760px) 100vw, 64vw"
           />
           <img
-            src="/images/a-rainy-night-1200.jpg"
-            srcset="/images/a-rainy-night-1200.jpg 1200w, /images/a-rainy-night-1920.jpg 1920w"
+            src={img("a-rainy-night-1200.jpg")}
+            srcset={`${img("a-rainy-night-1200.jpg")} 1200w, ${img("a-rainy-night-1920.jpg")} 1920w`}
             sizes="(max-width: 760px) 100vw, 64vw"
             width="1920"
             height="2590"
@@ -197,7 +199,7 @@ const roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
               GitHub <span aria-hidden="true">↗</span>
               <span class="sr-only">（在新标签页打开）</span>
             </a>
-            <a href="/rss.xml">RSS <span aria-hidden="true">↗</span></a>
+            <a href={withBase("/rss.xml")}>RSS <span aria-hidden="true">↗</span></a>
           </p>
         </div>
         <div class="about-detail">

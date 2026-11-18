@@ -1,5 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
+import { withBase } from "./site";
 
 export type Post = CollectionEntry<"writing">;
 
@@ -9,14 +10,17 @@ export async function getPublishedPosts(): Promise<Post[]> {
     ({ data }) => !data.draft || import.meta.env.DEV,
   );
 
+  // 按日期倒序：Studio 里新发的文章日期是当天，自然排到最前，
+  // 首页首屏的「Latest writing」也会跟着换。order 只用来决定同一天内的先后。
   return posts.sort((a, b) => {
-    if (a.data.order !== b.data.order) return a.data.order - b.data.order;
-    return b.data.date.getTime() - a.data.date.getTime();
+    const byDate = b.data.date.getTime() - a.data.date.getTime();
+    if (byDate !== 0) return byDate;
+    return a.data.order - b.data.order;
   });
 }
 
 export function postPath(post: Post): string {
-  return `/writing/${post.id}/`;
+  return withBase(`/writing/${post.id}/`);
 }
 
 export function formatDate(date: Date): string {

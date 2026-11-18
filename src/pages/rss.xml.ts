@@ -1,11 +1,18 @@
 import rss from "@astrojs/rss";
 import type { APIContext } from "astro";
 import { getPublishedPosts, postPath } from "../lib/posts";
-import { SITE_DESCRIPTION, SITE_TITLE, fallbackSiteUrl } from "../lib/site";
+import {
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+  fallbackSiteUrl,
+  withBase,
+} from "../lib/site";
 
 export async function GET(context: APIContext) {
   const posts = await getPublishedPosts();
-  const site = context.site ?? new URL(context.url.origin || fallbackSiteUrl);
+  const origin = context.site ?? new URL(context.url.origin || fallbackSiteUrl);
+  // 频道链接指向站点子路径本身，而不是域名根。
+  const site = new URL(withBase("/"), origin);
 
   return rss({
     title: SITE_TITLE,

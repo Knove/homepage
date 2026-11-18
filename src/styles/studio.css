@@ -1,0 +1,280 @@
+/*
+ * Studio 的额外样式。
+ *
+ * 排版全部来自 article.css —— 编辑区用的就是文章页的 .article-intro / .article-deck /
+ * .prose，所以写的时候看到的就是读者看到的。这里只补两样东西：
+ * 可编辑区域的空状态提示，以及页面底部那条发布栏。
+ */
+
+/* 底部发布栏会盖住内容末尾，给它让出高度 */
+body.studio-page {
+  padding-bottom: 3.4rem;
+}
+
+.studio-field,
+.studio-prose {
+  outline: none;
+}
+
+.studio-field:empty::before,
+.studio-prose:empty::before,
+.studio-prose:has(> br:only-child)::before {
+  content: attr(data-placeholder);
+  color: var(--ink-ghost);
+  pointer-events: none;
+}
+
+.studio-prose {
+  min-height: 46vh;
+}
+
+/* ---------- 日期 ---------- */
+
+.studio-date-label {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.studio-date-label input {
+  padding: 0.16rem 0.34rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  letter-spacing: 0.04em;
+}
+
+.studio-date-label input:focus {
+  border-color: rgba(200, 173, 127, 0.45);
+  outline: none;
+}
+
+.studio-date-label input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(1) opacity(0.4);
+}
+
+/* ---------- 发布栏 ---------- */
+
+.studio-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 60;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.62rem clamp(0.9rem, 3vw, 1.6rem);
+  border-top: 1px solid var(--line);
+  background: rgba(11, 11, 9, 0.9);
+  backdrop-filter: blur(14px) saturate(120%);
+  color: var(--ink-faint);
+  font: 500 0.6rem/1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.studio-bar-state {
+  flex: 0 0 auto;
+  min-width: 6.5rem;
+  color: var(--ink-ghost);
+  letter-spacing: 0.08em;
+}
+
+.studio-slug {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 0.35rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.studio-slug input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.22rem 0.1rem;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  transition: border-color 180ms ease;
+}
+
+.studio-slug input:focus {
+  border-bottom-color: var(--line);
+  outline: none;
+}
+
+.studio-bar-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.5rem;
+}
+
+/* ---------- 按钮 ---------- */
+
+.studio-btn {
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: 500 0.6rem/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+}
+
+.studio-btn:hover {
+  border-color: rgba(231, 222, 207, 0.32);
+  color: var(--ink);
+}
+
+.studio-btn--primary {
+  border-color: rgba(200, 173, 127, 0.45);
+  color: var(--brass);
+}
+
+.studio-btn--primary:hover {
+  background: var(--brass-soft);
+  color: #e8d6b4;
+}
+
+.studio-btn[disabled] {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.studio-btn[disabled]:hover {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--ink-soft);
+}
+
+/* ---------- 对话框 ---------- */
+
+.studio-dialog {
+  width: min(92vw, 26rem);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--paper-raised);
+  color: var(--ink);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.62);
+}
+
+.studio-dialog::backdrop {
+  background: rgba(5, 5, 4, 0.74);
+  backdrop-filter: blur(3px);
+}
+
+.studio-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.5rem;
+}
+
+.studio-dialog-title {
+  font-family: var(--font-serif);
+  font-size: 1.32rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.studio-dialog-note {
+  color: var(--ink-faint);
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  word-break: break-all;
+}
+
+.studio-dialog input {
+  padding: 0.62rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink);
+  font: 400 0.9rem/1.2 var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+.studio-dialog input:focus {
+  border-color: rgba(200, 173, 127, 0.5);
+  outline: none;
+}
+
+.studio-dialog-status {
+  min-height: 1.2em;
+  color: #d98a6a;
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.studio-dialog-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.3rem;
+}
+
+.studio-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 42vh;
+  overflow-y: auto;
+}
+
+.studio-list-item {
+  padding: 0.55rem 0.1rem;
+  border: 0;
+  border-bottom: 1px solid var(--line-soft);
+  background: none;
+  color: var(--ink-soft);
+  font: 400 0.82rem/1.4 var(--font-mono);
+  letter-spacing: 0.02em;
+  text-align: left;
+  cursor: pointer;
+  transition: color 160ms ease, background 160ms ease;
+}
+
+.studio-list-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink);
+}
+
+/* ---------- 窄屏 ---------- */
+
+@media (max-width: 760px) {
+  .studio-bar {
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+  }
+
+  .studio-bar-state {
+    order: 1;
+    min-width: 0;
+  }
+
+  .studio-bar-actions {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .studio-slug {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  body.studio-page {
+    padding-bottom: 5.6rem;
+  }
+}

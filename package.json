@@ -7,14 +7,18 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "key": "node scripts/make-key.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "4.0.19",
-    "astro": "7.4.12"
+    "astro": "7.4.12",
+    "marked": "^18.2.1",
+    "turndown": "^7.2.5"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.6",
+    "@types/turndown": "^5.0.6",
     "typescript": "5.9.3"
   },
   "engines": {

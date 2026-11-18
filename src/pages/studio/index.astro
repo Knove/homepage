@@ -1,0 +1,139 @@
+---
+import SiteFooter from "../../components/SiteFooter.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/site";
+import "../../styles/article.css";
+import "../../styles/studio.css";
+---
+
+<BaseLayout
+  title="Studio — Knove"
+  description="写作。"
+  noindex
+  bodyClass="article-page studio-page"
+>
+  <SiteHeader />
+
+  <main id="main" class="article-main" tabindex="-1">
+    <article class="article">
+      <header class="article-intro">
+        <div class="article-kicker">
+          <span>Studio</span>
+          <span aria-hidden="true">/</span>
+          <span id="studio-mode">新草稿</span>
+        </div>
+
+        <h1
+          id="field-title"
+          class="studio-field"
+          contenteditable="true"
+          role="textbox"
+          aria-label="标题"
+          data-placeholder="标题"
+        ></h1>
+
+        <p
+          id="field-deck"
+          class="article-deck studio-field"
+          contenteditable="true"
+          role="textbox"
+          aria-label="摘要"
+          data-placeholder="一句话摘要，显示在首页列表"
+        ></p>
+
+        <div class="article-meta">
+          <label class="studio-date-label">
+            <span>日期</span>
+            <input id="field-date" type="date" />
+          </label>
+          <span aria-hidden="true">·</span>
+          <span id="field-read">1 分钟阅读</span>
+        </div>
+      </header>
+
+      <div
+        id="field-body"
+        class="prose studio-prose"
+        contenteditable="true"
+        role="textbox"
+        aria-label="正文"
+        aria-multiline="true"
+        data-placeholder="从这里开始写。第一段会以略大的字号成为开篇。"
+      ></div>
+
+      <footer class="article-outro">
+        <div class="article-outro-top">
+          <p class="article-signature">
+            <span class="article-signature-mark" aria-hidden="true"></span>
+            <span>Studio</span>
+          </p>
+          <a class="article-back" href={withBase("/")}>
+            返回首页 <span aria-hidden="true">↖</span>
+          </a>
+        </div>
+      </footer>
+    </article>
+  </main>
+
+  <SiteFooter />
+
+  <div class="studio-bar" role="region" aria-label="发布">
+    <span id="studio-save-state" class="studio-bar-state">未保存</span>
+
+    <label class="studio-slug">
+      <span aria-hidden="true">/writing/</span>
+      <input
+        id="field-slug"
+        type="text"
+        spellcheck="false"
+        autocomplete="off"
+        aria-label="文章地址"
+      />
+      <span aria-hidden="true">/</span>
+    </label>
+
+    <div class="studio-bar-actions">
+      <button id="btn-open" type="button" class="studio-btn">打开</button>
+      <button id="btn-publish" type="button" class="studio-btn studio-btn--primary">
+        发布
+      </button>
+    </div>
+  </div>
+
+  <dialog id="publish-dialog" class="studio-dialog">
+    <form method="dialog" class="studio-dialog-form">
+      <p class="studio-dialog-title">发布</p>
+      <p class="studio-dialog-note" id="publish-target"></p>
+      <input
+        id="publish-password"
+        type="password"
+        autocomplete="current-password"
+        placeholder="发布密码"
+        aria-label="发布密码"
+      />
+      <p id="publish-status" class="studio-dialog-status" role="alert"></p>
+      <div class="studio-dialog-actions">
+        <button id="publish-cancel" type="button" class="studio-btn">取消</button>
+        <button id="publish-confirm" type="button" class="studio-btn studio-btn--primary">
+          确认发布
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="open-dialog" class="studio-dialog">
+    <form method="dialog" class="studio-dialog-form">
+      <p class="studio-dialog-title">打开已有文章</p>
+      <p class="studio-dialog-note" id="open-status">正在读取列表…</p>
+      <div id="open-list" class="studio-list"></div>
+      <div class="studio-dialog-actions">
+        <button id="open-close" type="button" class="studio-btn">关闭</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    import "../../scripts/studio";
+  </script>
+</BaseLayout>
